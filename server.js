@@ -8,4 +8,4 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 
 app.use("/auth", authRouter);
-app.listen(5000, () => console.log('server is running on port 5000'));
+app.listen(4567, () => console.log('server is running on port 4567'));

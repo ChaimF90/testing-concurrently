@@ -1,13 +1,12 @@
 const express = require('express').Router;
 const router = express();
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const uuidv1 = require('uuid/v1');
 const { createUser, getUser, updateUser } = require("../model/users");
 const { createResetRequest, getResetRequest } = require("../model/resetRequests");
 const sendResetLink = require("./sendEmail");
 
-router.post("/", (req, res) => {
+router.post("/signup", (req, res) => {
     bcrypt.hash(req.body.password, 10).then(hashed => {
         const user = {
             email: req.body.email,
@@ -23,7 +22,7 @@ router.post("/login", (req, res) => {
     if (thisUser) {
         bcrypt.compare(req.body.password, thisUser.password).then(result => {
             if (result) {
-                const token = jwt.sign({ user: thisUser.email }, "bigSecret", { expiresIn: "45m" });
+                const token = uuidv1();
                 res.status(200).json({ token });
             } else {
                 res.status(401).json({ message: "Access denied" });
